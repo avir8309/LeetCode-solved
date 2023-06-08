@@ -2,19 +2,19 @@ typedef pair<int,set<pair<int,int>>> pi;
 class Solution {
 public:
     int kthSmallest(vector<vector<int>>& mat, int k) {
-        priority_queue<pi,vector<pi>,greater<pi>>pq;
+        priority_queue<pi,vector<pi>,greater<pi>>pq;//o(1)
         int n=mat.size();
         int m=mat[0].size();
-        set<pair<int,int>> st;
+        set<pair<int,int>> st;//o(1)
         int sum=0;
-        for(int i=0;i<n;i++){
+        for(int i=0;i<n;i++){//o(n)
             sum+=mat[i][0];
             st.insert({i,0});
 
         }
-        pq.push({sum,st});
+        pq.push({sum,st});//o(logn)
         int ans=-1;
-        set<set<pair<int,int>>>vis;
+        set<set<pair<int,int>>>vis;//k*m*log(n)
         vis.insert(st);
         while(!pq.empty() and k--){
             auto x=pq.top();
@@ -24,7 +24,7 @@ public:
             //extract top element
             //go in its set
             //and check for evry coordinate that can we increment it
-            for(auto z: x.second){
+            for(auto z: x.second){ //m
                 set<pair<int,int>>p=x.second;
                 p.erase(z);
                 int i=z.first;
