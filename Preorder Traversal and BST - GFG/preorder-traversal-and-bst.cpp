@@ -11,17 +11,37 @@ class Solution {
   public:
     int canRepresentBST(int arr[], int n) {
         // code here
-        int root=-1;
+        vector<int> nextgreater;
         stack<int> st;
-        for(int i=0;i<n;i++){
-            while(!st.empty() and st.top()<arr[i]){
-                root=st.top();
+        st.push(n-1);
+        nextgreater.push_back(-1);
+        for(int i=n-2;i>=0;i--){
+            while(!st.empty() and arr[st.top()]<arr[i]){
                 st.pop();
             }
-            if(root>arr[i]){
+            if(st.empty()){
+                nextgreater.push_back(-1);
+            }
+            else{
+                nextgreater.push_back(st.top());
+            }
+            st.push(i);
+        }
+        reverse(nextgreater.begin(),nextgreater.end());
+        vector<int> pre(n);
+        pre[n-1]=arr[n-1];
+        for(int i=n-2;i>=0;i--){
+            pre[i]=min(pre[i+1],arr[i]);
+        }
+        //last waala banda ya -1 to continue;
+        for(int i=0;i<n;i++){
+            int a=nextgreater[i];
+            if(a==-1 or a==n-1){
+                continue;
+            }
+            if(pre[a+1]<arr[i]){
                 return false;
             }
-            st.push(arr[i]);
         }
         return true;
     }
